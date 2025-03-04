@@ -1,39 +1,223 @@
 "use client"
 
+import React, { useState, useEffect, useRef, Suspense } from "react"
 import { Canvas, useLoader } from "@react-three/fiber"
-import { OrbitControls, Stage } from "@react-three/drei"
-import { Suspense } from "react"
-import { Button } from "@/components/ui/button"
+import { OrbitControls, Stage, Html } from "@react-three/drei"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
-
-function Model() {
-    const gltf = useLoader(GLTFLoader, "/model/Plotter_logo.glb")
-    return <primitive object={gltf.scene} scale={1.5} />
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
   }
 
-export default function Hero() {
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("3D rendering error:", error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex items-center justify-center h-full w-full bg-gray-100 rounded-lg">
+          <div className="text-center p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">3D Model Error</h3>
+            <p className="text-gray-500">There was a problem loading the 3D model.</p>
+          </div>
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
+
+// Model component for the 3D model
+function Model() {
+  const [error, setError] = useState(false)
+
+  // Using the built-in duck model that's available in the v0 environment
+  const gltf = useLoader(GLTFLoader, "/model/Plotter_logo.glb", undefined, (error) => {
+    console.error("Error loading 3D model:", error)
+    setError(true)
+  })
+
+  if (error) {
+    return (
+      <Html center>
+        <div className="bg-red-50 p-4 rounded-lg text-red-500 text-center">
+          <p>Failed to load 3D model</p>
+          <p className="text-xs mt-2">Please check the model path</p>
+        </div>
+      </Html>
+    )
+  }
+
+  return <primitive object={gltf.scene} scale={0.8} position={[0, -0.5, 0]} />
+}
+
+// Loading component for the 3D model
+function ModelLoader() {
   return (
-    <section className="min-h-screen pt-16 flex flex-col lg:flex-row items-center justify-center gap-8 p-4">
-      <div className="flex-1 max-w-xl">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">Discover Our Amazing Product</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Experience innovation at its finest with our revolutionary product. Designed for the future, built for you.
-        </p>
-        <Button className="bg-[#EF9520] text-white hover:bg-[#EF9520]/90">Learn More</Button>
+    <Html center>
+      <div className="flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#EF9520] border-r-transparent"></div>
+      </div>
+    </Html>
+  )
+}
+
+// Carousel slides data
+const slides = [
+  {
+    id: 1,
+    title: "Discover Our Amazing Product",
+    description:
+      "Experience innovation at its finest with our revolutionary product. Designed for the future, built for you.",
+    buttonText: "Learn More",
+    buttonLink: "#learn-more",
+    model: true,
+  },
+  {
+    id: 2,
+    title: "Engineered for Excellence",
+    description:
+      "Precision engineering meets cutting-edge technology. Our product sets new standards in performance and reliability.",
+    buttonText: "See Features",
+    buttonLink: "#features",
+    model: false,
+    image: "/leaves.jpg?height=600&width=800",
+  },
+  {
+    id: 3,
+    title: "Sustainable Innovation",
+    description:
+      "Committed to a greener future, our product is designed with sustainability at its core without compromising on performance.",
+    buttonText: "Our Commitment",
+    buttonLink: "#commitment",
+    model: false,
+    image: "/leaves.jpg?height=600&width=800",
+  },
+]
+
+export default function Carousel() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null)
+  const totalSlides = slides.length
+
+  // Function to go to the next slide
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
+  }
+
+  // Function to go to the previous slide
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
+  }
+
+  // Function to go to a specific slide
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+  }
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (isAutoPlaying) {
+      autoPlayRef.current = setInterval(() => {
+        nextSlide()
+      }, 1000) // Change slide every 1 second
+    }
+
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current)
+      }
+    }
+  }, [isAutoPlaying]) //Corrected dependency
+
+  // Pause auto-play on hover
+  const handleMouseEnter = () => {
+    setIsAutoPlaying(false)
+  }
+
+  // Resume auto-play on mouse leave
+  const handleMouseLeave = () => {
+    setIsAutoPlaying(true)
+  }
+
+  return (
+    <div
+      className="relative w-full h-screen overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Slides */}
+      <div className="h-full">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={cn(
+              "absolute top-0 left-0 w-full h-full transition-opacity duration-1000",
+              currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0",
+            )}
+          >
+            <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8">
+              {/* Text Content */}
+              <div className="flex-1 max-w-xl z-20 p-6 lg:p-12 bg-black/5 backdrop-blur-sm rounded-lg">
+                <h1 className="text-4xl md:text-6xl font-bold mb-6">{slide.title}</h1>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">{slide.description}</p>
+                <Button className="bg-[#EF9520] text-white hover:bg-[#EF9520]/90">{slide.buttonText}</Button>
+              </div>
+
+              {/* 3D Model or Image */}
+              <div className="flex-1 w-full h-[50vh] lg:h-full">
+                {slide.model ? (
+                  <ErrorBoundary>
+                    <Canvas>
+                      <Suspense fallback={<ModelLoader />}>
+                        <Stage environment="studio" intensity={0.5}>
+                          <Model />
+                        </Stage>
+                        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
+                      </Suspense>
+                    </Canvas>
+                  </ErrorBoundary>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img
+                      src={slide.image || "/placeholder.svg"}
+                      alt={slide.title}
+                      className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="flex-1 w-full aspect-square">
-        <Canvas>
-          <Suspense fallback={null}>
-            <Stage environment="studio" intensity={0.5}>
-              <Model />
-            </Stage>
-            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
-          </Suspense>
-        </Canvas>
+      {/* Dots Navigation */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={cn(
+              "w-3 h-3 rounded-full transition-all duration-300",
+              currentSlide === index ? "bg-[#EF9520] w-8" : "bg-gray-400 hover:bg-gray-600",
+            )}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
-    </section>
+    </div>
   )
 }
 
