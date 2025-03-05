@@ -101,7 +101,7 @@ const slides = [
     buttonText: "Our Commitment",
     buttonLink: "#commitment",
     model: false,
-    image: "/leaves.jpg?height=600&width=800",
+    image: "https://wallpaperaccess.com/full/13646.jpg",
   },
 ]
 
@@ -131,7 +131,7 @@ export default function Carousel() {
     if (isAutoPlaying) {
       autoPlayRef.current = setInterval(() => {
         nextSlide()
-      }, 1000) // Change slide every 1 second
+      }, 3000) // Change slide every 2 seconds
     }
 
     return () => {
@@ -139,7 +139,7 @@ export default function Carousel() {
         clearInterval(autoPlayRef.current)
       }
     }
-  }, [isAutoPlaying]) //Corrected dependency
+  }, [isAutoPlaying, nextSlide]) //Corrected dependency
 
   // Pause auto-play on hover
   const handleMouseEnter = () => {
@@ -166,10 +166,19 @@ export default function Carousel() {
               "absolute top-0 left-0 w-full h-full transition-opacity duration-1000",
               currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0",
             )}
+            style={
+              !slide.model
+                ? {
+                    backgroundImage: `url(${slide.image || "/placeholder.svg"})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+                : {}
+            }
           >
             <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8">
               {/* Text Content */}
-              <div className="flex-1 max-w-xl z-20 p-6 lg:p-12 bg-black/5 backdrop-blur-sm rounded-lg">
+              <div className="flex-1 max-w-xl z-20 p-6 lg:p-12 bg-black/30 backdrop-blur-sm rounded-lg text-white">
                 <h1 className="text-4xl md:text-6xl font-bold mb-6">{slide.title}</h1>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">{slide.description}</p>
                 <Button className="bg-[#EF9520] text-white hover:bg-[#EF9520]/90">{slide.buttonText}</Button>
@@ -190,11 +199,7 @@ export default function Carousel() {
                   </ErrorBoundary>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <img
-                      src={slide.image || "/placeholder.svg"}
-                      alt={slide.title}
-                      className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
-                    />
+                    {/* Background image is now applied to the parent container */}
                   </div>
                 )}
               </div>
