@@ -30,18 +30,13 @@ export default function AboutSection() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">About Us</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                At Trubot, we're passionate about creating intelligent automation solutions that transform how
-                businesses operate. Founded in 2020, our team of experts combines deep industry knowledge with
-                cutting-edge AI technology.
+                The mobile and electronics refurbishment industry is booming, driven by rising demand for affordable, high-quality devices and a strong push for sustainability. With new device costs soaring, refurbished products offer the perfect balance of value and reliability, attracting eco-conscious consumers.
               </p>
               <p>
-                Our mission is to empower organizations of all sizes to achieve more with less effort through smart,
-                adaptive automation that learns and improves over time.
+              Smartphones lead this market, powered by advanced refurbishment technologies that enhance quality and build trust. Emerging markets like Asia and Africa are fueling rapid growth, highlighting the industry's vast potential.
               </p>
               <p>
-                We believe that the future of work is collaborative, with humans and AI working together to achieve
-                extraordinary results. Trubot is at the forefront of this revolution, creating tools that augment human
-                capabilities rather than replace them.
+              Despite challenges like quality control and counterfeit risks, collaboration and environmental awareness are shaping this sector into a hub of innovation, sustainability, and profitability.
               </p>
             </div>
 

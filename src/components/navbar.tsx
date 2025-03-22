@@ -21,7 +21,7 @@ export default function Navbar() {
               alt="Trubot Logo"
               className="h-8 w-8"
             />
-            <span className="ml-2 text-xl font-bold">Trubot</span>
+            <span className="ml-2 text-xl font-bold">Trubot Electronics</span>
           </Link>
 
           {/* Desktop Navigation */}

@@ -76,18 +76,18 @@ function ModelLoader() {
 const slides = [
   {
     id: 1,
-    title: "Discover Our Amazing Product",
+    title: "Unleash Precision & Versatility with the Trubot Plotter Machine",
     description:
-      "Experience innovation at its finest with our revolutionary product. Designed for the future, built for you.",
+      "Cutting-edge technology meets limitless possibilities—effortlessly craft hydrogel screen protectors and skins for over 50,000 device models with unmatched accuracy! Let me know if you’d like any further tweaks!",
     buttonText: "Learn More",
     buttonLink: "#learn-more",
     model: true,
   },
   {
     id: 2,
-    title: "Engineered for Excellence",
+    title: "Experience Precision Cutting Like Never Before!",
     description:
-      "Precision engineering meets cutting-edge technology. Our product sets new standards in performance and reliability.",
+      "The Trubot Plotter Cutting Machine delivers precision, speed, and versatility with advanced blade control for flawless cuts. Built for efficiency and ease, it features an interactive About Screen for total control. Trubot redefines precision cutting.",
     buttonText: "See Features",
     buttonLink: "#features",
     model: false,
@@ -95,9 +95,9 @@ const slides = [
   },
   {
     id: 3,
-    title: "Sustainable Innovation",
+    title: " Innovation, Integrity & Sustainable Excellence",
     description:
-      "Committed to a greener future, our product is designed with sustainability at its core without compromising on performance.",
+      "We deliver cutting-edge solutions with quality and integrity. Committed to sustainability, we embrace eco-friendly practices for a greener future. Customer-focused and collaborative, we lead with purpose.",
     buttonText: "Our Commitment",
     buttonLink: "#commitment",
     model: false,
@@ -150,7 +150,7 @@ export default function Carousel() {
   const handleMouseLeave = () => {
     setIsAutoPlaying(true)
   }
-
+  
   return (
     <div
       className="relative w-full h-screen overflow-hidden mt-10 md:mt-10"
@@ -179,7 +179,7 @@ export default function Carousel() {
             <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8">
               {/* Text Content */}
               <div className="flex-1 max-w-xl z-20 p-6 lg:p-12 bg-black/30 backdrop-blur-sm rounded-lg text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6">{slide.title}</h1>
+                <h1 className="text-2xl md:text-4xl font-bold mb-6]">{slide.title}</h1>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">{slide.description}</p>
                 <Button className="bg-[#EF9520] text-white hover:bg-[#EF9520]/90">{slide.buttonText}</Button>
               </div>
@@ -193,7 +193,7 @@ export default function Carousel() {
                         <Stage environment="studio" intensity={0.5}>
                           <Model />
                         </Stage>
-                        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
+                        <OrbitControls  enableZoom={false} autoRotate autoRotateSpeed={3} />
                       </Suspense>
                     </Canvas>
                   </ErrorBoundary>
@@ -209,13 +209,13 @@ export default function Carousel() {
       </div>
 
       {/* Dots Navigation */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2 mb-5">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
             className={cn(
-              "w-3 h-3 rounded-full transition-all duration-300",
+              "w-3 h-1 rounded-full transition-all duration-300",
               currentSlide === index ? "bg-[#EF9520] w-8" : "bg-gray-400 hover:bg-gray-600",
             )}
             aria-label={`Go to slide ${index + 1}`}

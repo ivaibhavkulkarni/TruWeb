@@ -17,20 +17,9 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
               <h2 className="text-2xl font-bold flex items-center">
-                <span className="text-[#ef9520] mr-2">Trubot</span>
+                <span className="text-[#ef9520] mr-2">Trubot Electronics</span>
               </h2>
               <p className="mt-2 text-gray-400">Intelligent automation for the modern business</p>
-            </div>
-            <div className="flex space-x-6">
-              <a href="#" className="hover:text-[#ef9520] transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-[#ef9520] transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-[#ef9520] transition-colors">
-                Contact
-              </a>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center md:text-left text-gray-400">
