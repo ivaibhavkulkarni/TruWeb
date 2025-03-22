@@ -95,7 +95,7 @@ export default function AboutSection() {
               </p>
               <p>
                 Smartphones lead this market, powered by advanced refurbishment technologies that enhance quality and
-                build trust. Emerging markets like Asia and Africa are fueling rapid growth, highlighting the industry's
+                build trust. Emerging markets like Asia and Africa are fueling rapid growth, highlighting the industrys
                 vast potential.
               </p>
               <p>
