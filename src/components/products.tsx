@@ -5,21 +5,21 @@ export default function Products() {
   const products = [
     {
       id: 1,
-      name: "Product One",
+      name: "iPhone",
       description: "Description for product one",
-      image: "/placeholder.svg?height=200&width=200",
+      image: "/ip.jpeg",
     },
     {
       id: 2,
-      name: "Product Two",
+      name: "iPad",
       description: "Description for product two",
-      image: "/placeholder.svg?height=200&width=200",
+      image: "/ipad.jpeg",
     },
     {
       id: 3,
-      name: "Product Three",
+      name: "MacBook",
       description: "Description for product three",
-      image: "/placeholder.svg?height=200&width=200",
+      image: "/mac.jpg",
     },
   ];
 

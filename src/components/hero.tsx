@@ -153,7 +153,7 @@ export default function Carousel() {
   
   return (
     <div
-      className="relative w-full h-screen overflow-hidden mt-10 md:mt-10"
+      className="relative w-full h-screen overflow-hidden mt-10 md:mt-10 bg-gradient-to-br from-white via-blue-200 to-black-500;"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       >
@@ -193,7 +193,7 @@ export default function Carousel() {
                         <Stage environment="studio" intensity={0.5}>
                           <Model />
                         </Stage>
-                        <OrbitControls  enableZoom={false} autoRotate autoRotateSpeed={3} />
+                        <OrbitControls  enableZoom={false} autoRotate autoRotateSpeed={2} />
                       </Suspense>
                     </Canvas>
                   </ErrorBoundary>
@@ -215,7 +215,7 @@ export default function Carousel() {
             key={index}
             onClick={() => goToSlide(index)}
             className={cn(
-              "w-3 h-1 rounded-full transition-all duration-300",
+              "w-3 h-3 rounded-full transition-all duration-300",
               currentSlide === index ? "bg-[#EF9520] w-8" : "bg-gray-400 hover:bg-gray-600",
             )}
             aria-label={`Go to slide ${index + 1}`}
