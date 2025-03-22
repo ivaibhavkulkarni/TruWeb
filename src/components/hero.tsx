@@ -153,17 +153,17 @@ export default function Carousel() {
 
   return (
     <div
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden mt-10 md:mt-10"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-    >
+      >
       {/* Slides */}
       <div className="h-full">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
             className={cn(
-              "absolute top-0 left-0 w-full h-full transition-opacity duration-1000",
+              "absolute top-0 left-0 w-full h-full transition-opacity duration-1000 mt-5",
               currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0",
             )}
             style={
