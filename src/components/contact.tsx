@@ -1,30 +1,58 @@
-"use client"
+"use client"; // Required for Client Component in Next.js
 
-import type React from "react"
-
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Send } from "lucide-react"
+import type React from "react";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    message: string;
+  }>({
     name: "",
     email: "",
     message: "",
-  })
+  });
+  const [btnText, setBtnText] = useState("Send Message"); // State for button text
+  const formRef = useRef<HTMLFormElement>(null); // Ref to access the form element
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log(formData)
-    alert("Thank you for your message! We'll get back to you soon.")
-    setFormData({ name: "", email: "", message: "" })
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!formRef.current) return; // Ensure form exists
+
+    setBtnText("Sending..."); // Update button text
+
+    const serviceID = "default_service"; // Your EmailJS Service ID
+    const templateID = "template_7cxmuvx"; // Your EmailJS Template ID
+    const publicKey = "iB4TNusog3hvnvTVI"; // Replace with your EmailJS Public Key
+
+    // Initialize EmailJS with your public key
+    emailjs.init(publicKey);
+
+    // Send form data using emailjs.sendForm
+    emailjs
+      .sendForm(serviceID, templateID, formRef.current)
+      .then(
+        () => {
+          setBtnText("Send Message");
+          alert("Your request has been sent!");
+          setFormData({ name: "", email: "", message: "" }); // Reset form
+        },
+        (err: unknown) => {
+          setBtnText("Send Message");
+          alert(JSON.stringify(err));
+        }
+      );
+  };
 
   return (
     <section id="contact" className="py-20 px-4 md:px-10 bg-gray-50">
@@ -49,7 +77,7 @@ export default function ContactSection() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form id="form" ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Your Name
@@ -57,7 +85,7 @@ export default function ContactSection() {
                 <input
                   type="text"
                   id="name"
-                  name="name"
+                  name="name" // Must match EmailJS template field name
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -73,7 +101,7 @@ export default function ContactSection() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
+                  name="email" // Must match EmailJS template field name
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -88,7 +116,7 @@ export default function ContactSection() {
                 </label>
                 <textarea
                   id="message"
-                  name="message"
+                  name="message" // Must match EmailJS template field name
                   value={formData.message}
                   onChange={handleChange}
                   required
@@ -99,11 +127,12 @@ export default function ContactSection() {
               </div>
 
               <button
+                id="button"
                 type="submit"
                 className="w-full bg-[#ef9520] hover:bg-[#d88418] text-white font-medium py-3 px-6 rounded-md transition-colors flex items-center justify-center"
               >
                 <Send className="h-5 w-5 mr-2" />
-                Send Message
+                {btnText} {/* Dynamic button text */}
               </button>
             </form>
           </motion.div>
@@ -173,6 +202,5 @@ export default function ContactSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
