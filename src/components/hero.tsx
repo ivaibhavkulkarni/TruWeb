@@ -7,17 +7,27 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+// Define the state interface for ErrorBoundary
+interface ErrorBoundaryState {
+  hasError: boolean
+}
+
+// Define the props interface for ErrorBoundary (including children)
+interface ErrorBoundaryProps {
+  children: React.ReactNode
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: any) {
     return { hasError: true }
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     console.error("3D rendering error:", error, errorInfo)
   }
 
@@ -131,7 +141,7 @@ export default function Carousel() {
     if (isAutoPlaying) {
       autoPlayRef.current = setInterval(() => {
         nextSlide()
-      }, 3000) // Change slide every 2 seconds
+      }, 3000) // Change slide every 3 seconds
     }
 
     return () => {
@@ -139,7 +149,7 @@ export default function Carousel() {
         clearInterval(autoPlayRef.current)
       }
     }
-  }, [isAutoPlaying, nextSlide]) //Corrected dependency
+  }, [isAutoPlaying])
 
   // Pause auto-play on hover
   const handleMouseEnter = () => {
@@ -153,10 +163,10 @@ export default function Carousel() {
   
   return (
     <div
-      className="relative w-full h-screen overflow-hidden mt-10 md:mt-10 bg-gradient-to-br from-white via-blue-200 to-black-500;"
+      className="relative w-full h-screen overflow-hidden mt-10 md:mt-10 bg-gradient-to-br from-white via-blue-200 to-black-500"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      >
+    >
       {/* Slides */}
       <div className="h-full">
         {slides.map((slide, index) => (
@@ -179,7 +189,7 @@ export default function Carousel() {
             <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8">
               {/* Text Content */}
               <div className="flex-1 max-w-xl z-20 p-6 lg:p-12 bg-black/30 backdrop-blur-sm rounded-lg text-white">
-                <h1 className="text-2xl md:text-4xl font-bold mb-6]">{slide.title}</h1>
+                <h1 className="text-2xl md:text-4xl font-bold mb-6">{slide.title}</h1>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">{slide.description}</p>
                 <Button className="bg-[#EF9520] text-white hover:bg-[#EF9520]/90">{slide.buttonText}</Button>
               </div>
@@ -193,7 +203,7 @@ export default function Carousel() {
                         <Stage environment="studio" intensity={0.5}>
                           <Model />
                         </Stage>
-                        <OrbitControls  enableZoom={false} autoRotate autoRotateSpeed={2} />
+                        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
                       </Suspense>
                     </Canvas>
                   </ErrorBoundary>
@@ -225,4 +235,3 @@ export default function Carousel() {
     </div>
   )
 }
-
