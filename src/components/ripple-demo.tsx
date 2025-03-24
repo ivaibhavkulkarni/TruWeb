@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, Suspense } from "react" // Added Suspense import
+import React, { useState, Suspense } from "react"
 import { Ripple } from "@/components/magicui/ripple"
 import { Canvas, useLoader } from "@react-three/fiber"
 import { OrbitControls, Stage, Html } from "@react-three/drei"
@@ -55,10 +55,16 @@ export default function RippleDemo() {
       <div className="relative w-full h-[600px] z-10">
         <Canvas>
           <Suspense fallback={<ModelLoader />}>
-            <Stage environment="studio" intensity={0.5}>
+            <Stage environment="studio" intensity={-0.1}>
               <Model modelPath={modelPath} />
             </Stage>
-            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
+            <OrbitControls 
+              enableZoom={false} 
+              autoRotate 
+              autoRotateSpeed={2}
+              minPolarAngle={0}        // Restricts rotation to not go below horizon
+              maxPolarAngle={Math.PI/2} // Limits rotation to horizontal plane
+            />
           </Suspense>
         </Canvas>
       </div>
