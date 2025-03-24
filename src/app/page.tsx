@@ -6,12 +6,13 @@ import Contact from "../components/contact"
 import Footer from "../components/footer"
 import ServicesSection from "../components/service-section"
 import ReviewsSection from "../components/reviews-section"
+import RippleDemo from "../components/ripple-demo"
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <Hero />
+      <RippleDemo/>
       <Products />
       <ServicesSection />
       <ReviewsSection />
