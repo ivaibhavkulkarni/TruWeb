@@ -101,6 +101,13 @@ export default function Navbar() {
                   Services
                 </Link>
                 <Link
+                  href="#reviews"
+                  className="text-lg font-medium hover:text-[#EF9520]"
+                  onClick={(e) => handleScroll(e, "reviews")}
+                >
+                  Reviews
+                </Link>
+                <Link
                   href="#about"
                   className="text-lg font-medium hover:text-[#EF9520]"
                   onClick={(e) => handleScroll(e, "about")}

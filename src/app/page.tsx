@@ -5,6 +5,7 @@ import About from "../components/about"
 import Contact from "../components/contact"
 import Footer from "../components/footer"
 import ServicesSection from "../components/service-section"
+import ReviewsSection from "../components/reviews-section"
 
 export default function Home() {
   return (
@@ -12,7 +13,8 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Products />
-      <ServicesSection/>
+      <ServicesSection />
+      <ReviewsSection />
       <About />
       <Contact />
       <Footer />
