@@ -4,6 +4,7 @@ import Products from "../components/products"
 import About from "../components/about"
 import Contact from "../components/contact"
 import Footer from "../components/footer"
+import ServicesSection from "../components/service-section"
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Products />
+      <ServicesSection/>
       <About />
       <Contact />
       <Footer />
