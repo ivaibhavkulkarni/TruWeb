@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { SetStateAction, useState } from "react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Check, ArrowRight, Smartphone, Building2, RefreshCw } from "lucide-react"
 
 export default function ServicesSection() {
   const [activeService, setActiveService] = useState(0)
+  const [isOpen, setIsOpen] = useState(false) // Added state for mobile dropdown
 
   const services = [
     {
@@ -41,6 +42,11 @@ export default function ServicesSection() {
     },
   ]
 
+  const handleServiceClick = (index: SetStateAction<number>) => {
+    setActiveService(index)
+    setIsOpen(!isOpen) // Toggle dropdown on mobile
+  }
+
   return (
     <section id="service-section" className="py-12 px-4 sm:px-6 md:px-10 bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -61,54 +67,78 @@ export default function ServicesSection() {
             viewport={{ once: true }}
             className="w-full lg:w-1/2"
           >
-            <div className="sticky top-24">
+            <div className="sticky top-24 lg:top-24">
               <div className="space-y-4">
                 {services.map((service, index) => (
-                  <motion.div
-                    key={index}
-                    className={cn(
-                      "p-4 rounded-lg cursor-pointer transition-all duration-300",
-                      activeService === index
-                        ? "bg-[#EF9520] text-white shadow-lg"
-                        : "bg-white hover:bg-gray-100 border border-gray-200",
-                    )}
-                    onClick={() => setActiveService(index)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        {index === 0 && (
-                          <Smartphone className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
-                        )}
-                        {index === 1 && (
-                          <Building2 className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
-                        )}
-                        {index === 2 && (
-                          <RefreshCw className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
-                        )}
-                        <h3 className="font-bold text-lg">{service.title}</h3>
+                  <div key={index}>
+                    <motion.div
+                      className={cn(
+                        "p-4 rounded-lg cursor-pointer transition-all duration-300",
+                        activeService === index
+                          ? "bg-[#EF9520] text-white shadow-lg"
+                          : "bg-white hover:bg-gray-100 border border-gray-200",
+                      )}
+                      onClick={() => handleServiceClick(index)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          {index === 0 && (
+                            <Smartphone className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
+                          )}
+                          {index === 1 && (
+                            <Building2 className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
+                          )}
+                          {index === 2 && (
+                            <RefreshCw className={activeService === index ? "text-white" : "text-[#EF9520]"} size={20} />
+                          )}
+                          <h3 className="font-bold text-lg">{service.title}</h3>
+                        </div>
+                        <ArrowRight
+                          className={cn(
+                            "transition-transform duration-300 lg:hidden", // Show arrow only on mobile
+                            activeService === index && isOpen ? "transform rotate-90" : "",
+                          )}
+                          size={18}
+                        />
                       </div>
-                      <ArrowRight
-                        className={cn(
-                          "transition-transform duration-300",
-                          activeService === index ? "transform rotate-90" : "",
-                        )}
-                        size={18}
-                      />
-                    </div>
-                  </motion.div>
+                    </motion.div>
+
+                    {/* Mobile dropdown content */}
+                    <motion.div
+                      className="lg:hidden overflow-hidden"
+                      initial={{ height: 0 }}
+                      animate={{
+                        height: activeService === index && isOpen ? "auto" : 0,
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="bg-white p-6 mt-2 rounded-xl shadow-lg">
+                        <p className="text-gray-700 mb-6">{services[activeService].description}</p>
+                        <div className="space-y-3">
+                          {services[activeService].features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <Check className="text-[#EF9520] flex-shrink-0" size={18} />
+                              <span className="text-gray-700">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
           </motion.div>
 
+          {/* Desktop content (hidden on mobile) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="w-full lg:w-1/2"
+            className="w-full lg:w-1/2 hidden lg:block"
           >
             <div className="bg-white p-6 rounded-xl shadow-lg">
               <div className="flex items-center gap-3 mb-4">
@@ -150,4 +180,3 @@ export default function ServicesSection() {
     </section>
   )
 }
-
