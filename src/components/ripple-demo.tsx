@@ -70,13 +70,13 @@ const RippleDemo: React.FC = () => {
             <OrbitControls
               enableZoom={false}
               autoRotate
-              autoRotateSpeed={2}
+              autoRotateSpeed={5}
               enablePan={false}
               enableRotate={true}
-              minAzimuthAngle={0}
-              maxAzimuthAngle={0}
-              minPolarAngle={Math.PI / 2}
-              maxPolarAngle={Math.PI / 2}
+              //minAzimuthAngle={0}
+              //maxAzimuthAngle={0}
+              //minPolarAngle={Math.PI / 2}
+              //maxPolarAngle={Math.PI / 2}
             />
           </Suspense>
         </Canvas>
