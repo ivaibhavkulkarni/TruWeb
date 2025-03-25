@@ -7,6 +7,7 @@ import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Trubot_logo from "../../public/Trubot-logo.png"
+import Logo from "../../public/logo.jpg"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -30,13 +31,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center">
             <Image
-              src={Trubot_logo}
+              src={Logo}
               alt="Trubot Logo"
-              width={32}
-              height={32}
-              className="h-8 w-8"
+              width={100}
+              height={100}
+              className="h-8 w-full"
             />
-            <span className="ml-2 text-xl font-bold">Trubot Electronics</span>
           </Link>
 
           {/* Desktop Navigation */}

@@ -13,6 +13,12 @@ const config = {
   		}
   	},
   	extend: {
+		fontFamily: {
+			arial: ['Arial', '"Helvetica Neue"', 'sans-serif'],
+			times: ['"Times New Roman"', 'Times', 'serif'],
+			copperplate: ['Copperplate', 'sans-serif'],
+			fantasy: ['Papyrus', 'fantasy'], // Example of a "fantasy" font
+		  },
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
