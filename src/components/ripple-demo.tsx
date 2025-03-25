@@ -13,10 +13,11 @@ interface ModelProps {
 
 // Model component for the 3D model
 function Model({ modelPath }: ModelProps) {
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<boolean>(false)
 
-  const gltf = useLoader(GLTFLoader, modelPath, undefined, (error) => {
-    console.error("Error loading 3D model:", error)
+  const gltf = useLoader(GLTFLoader, modelPath, undefined, (event) => {
+    // Note: This is a ProgressEvent, not an ErrorEvent
+    console.error("Error loading 3D model:", event)
     setError(true)
   })
 
@@ -46,13 +47,12 @@ function ModelLoader() {
 }
 
 export default function RippleDemo() {
-  // Replace this path with your actual 3D model path
-  const modelPath = "/model/Plotter_logo.glb" // Update this to your model's location
+  const modelPath: string = "/model/Plotter_logo.glb" // Update this to your model's location
 
   return (
-    <div className="relative flex h-[800px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background">
+    <div className="relative flex w-full h-[calc(100vh-4rem)] mt-16 flex-col items-center justify-center overflow-hidden rounded-lg border bg-background">
       {/* 3D Model Canvas */}
-      <div className="relative w-full h-[600px] z-10">
+      <div className="relative w-full h-full z-10">
         <Canvas>
           <Suspense fallback={<ModelLoader />}>
             <Stage environment="studio" intensity={-0.1}>
@@ -62,8 +62,12 @@ export default function RippleDemo() {
               enableZoom={false} 
               autoRotate 
               autoRotateSpeed={2}
-              minPolarAngle={0}        // Restricts rotation to not go below horizon
-              maxPolarAngle={Math.PI/2} // Limits rotation to horizontal plane
+              enablePan={false}
+              enableRotate={true}
+              minAzimuthAngle={0}
+              maxAzimuthAngle={0}
+              minPolarAngle={Math.PI/2}
+              maxPolarAngle={Math.PI/2}
             />
           </Suspense>
         </Canvas>
