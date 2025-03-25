@@ -1,5 +1,6 @@
 'use client';
 import { motion, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 
 // Define product interface
 interface Product {
@@ -29,9 +30,67 @@ export default function Products() {
       description: "Premium laptop for professionals",
       image: "/mac.jpg",
     },
+    {
+      id: 4,
+      name: "MacBook",
+      description: "Premium laptop for professionals",
+      image: "/mac.jpg",
+    },
+    {
+      id: 5,
+      name: "MacBook",
+      description: "Premium laptop for professionals",
+      image: "/mac.jpg",
+    },
+    {
+      id: 7,
+      name: "MacBook",
+      description: "Premium laptop for professionals",
+      image: "/mac.jpg",
+    },
+    {
+      id: 8,
+      name: "MacBook",
+      description: "Premium laptop for professionals",
+      image: "/mac.jpg",
+    },
+    {
+      id: 9,
+      name: "MacBook",
+      description: "Premium laptop for professionals",
+      image: "/mac.jpg",
+    },
   ];
 
-  // Animation variants for cards
+  const [currentIndexMobile, setCurrentIndexMobile] = useState(0);
+  const [currentIndexDesktop, setCurrentIndexDesktop] = useState(0);
+  const itemsPerViewMobile = 1;
+  const itemsPerViewDesktop = 3;
+  const slideInterval = 3000; // 3 seconds
+
+  // Auto-slide effect for both mobile and desktop
+  useEffect(() => {
+    // Mobile auto-slide
+    const mobileInterval = setInterval(() => {
+      setCurrentIndexMobile((prev) => 
+        prev === products.length - 1 ? 0 : prev + 1
+      );
+    }, slideInterval);
+
+    // Desktop auto-slide
+    const desktopInterval = setInterval(() => {
+      setCurrentIndexDesktop((prev) => 
+        prev === Math.ceil(products.length / itemsPerViewDesktop) - 1 ? 0 : prev + 1
+      );
+    }, slideInterval);
+    
+    // Cleanup both intervals
+    return () => {
+      clearInterval(mobileInterval);
+      clearInterval(desktopInterval);
+    };
+  }, [products.length]);
+
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -68,32 +127,113 @@ export default function Products() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product: Product, index: number) => (
+        {/* Mobile View - Carousel (1 product at a time) */}
+        <div className="md:hidden relative overflow-hidden w-full">
+          <div className="relative w-full">
             <motion.div
-              key={product.id}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              whileHover="hover"
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100"
+              className="flex flex-nowrap"
+              animate={{ 
+                x: `-${currentIndexMobile * 100}%`
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{ width: `${products.length * 100}%` }}
             >
-              <div className="relative">
-                <img 
-                  src={product.image || "/placeholder.svg"} 
-                  alt={product.name} 
-                  className="w-full h-56 object-cover transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900">{product.name}</h3>
-                <p className="text-gray-600 text-base leading-relaxed">{product.description}</p>
-              </div>
+              {products.map((product: Product) => (
+                <motion.div
+                  key={product.id}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  whileHover="hover"
+                  viewport={{ once: true }}
+                  className="w-full flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100"
+                >
+                  <div className="relative w-full h-40">
+                    <img 
+                      src={product.image || "/placeholder.svg"} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover transition-transform duration-300"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/placeholder.svg";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg md:text-xl font-semibold mb-2 text-gray-900">{product.name}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
+          </div>
+
+          {/* Mobile Navigation Dots */}
+          <div className="flex justify-center mt-6 space-x-2">
+            {Array.from({ length: products.length }).map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentIndexMobile(index)}
+                className={`rounded-full transition-all duration-300 cursor-pointer ${
+                  currentIndexMobile === index 
+                    ? "bg-[#EF9520] w-6 sm:w-8 h-2" 
+                    : "bg-gray-400 hover:bg-gray-600 w-2 h-2"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop View - Carousel (3 products, with auto-slide) */}
+        <div className="hidden md:block overflow-hidden">
+          <motion.div 
+            className="flex gap-6"
+            animate={{ x: `-${currentIndexDesktop * (100 / itemsPerViewDesktop)}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            {products.map((product: Product) => (
+              <motion.div
+                key={product.id}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                whileHover="hover"
+                viewport={{ once: true }}
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100 flex-shrink-0 w-[calc(33.33%-1rem)]"
+              >
+                <div className="relative w-full h-40">
+                  <img 
+                    src={product.image || "/placeholder.svg"} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover transition-transform duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/placeholder.svg";
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg md:text-xl font-semibold mb-2 text-gray-900">{product.name}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Desktop Navigation Dots */}
+          <div className="flex justify-center mt-6 space-x-2">
+            {Array.from({ length: Math.ceil(products.length / itemsPerViewDesktop) }).map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentIndexDesktop(index)}
+                className={`rounded-full transition-all duration-300 cursor-pointer ${
+                  currentIndexDesktop === index 
+                    ? "bg-[#EF9520] w-6 sm:w-8 h-2" 
+                    : "bg-gray-400 hover:bg-gray-600 w-2 h-2"
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         <motion.div
