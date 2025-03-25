@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Trubot Plotter",
   icons: {
     icon: '/icon.ico',
+    apple: '/apple-touch-icon.png',
   },
   description: "Built by Vaibhav Kulkarni",
 }
