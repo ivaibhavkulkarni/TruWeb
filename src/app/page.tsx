@@ -1,6 +1,6 @@
-"use client"; // Add this at the very top
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Products from "../components/products";
 import About from "../components/about";
@@ -14,7 +14,13 @@ export default function Home(): JSX.Element {
   const [showButton, setShowButton] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    // Scroll to top on mount (page load/refresh)
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    const handleScroll = (): void => {
       if (window.scrollY > 300) {
         setShowButton(true);
       } else {
@@ -22,14 +28,14 @@ export default function Home(): JSX.Element {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = (): void => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
@@ -43,24 +49,24 @@ export default function Home(): JSX.Element {
       <About />
       <Contact />
       <Footer />
-      
-      {showButton && (  // Navigation Button
+
+      {showButton && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-10 right-10 z-50 w-12 h-12 bg-gray-800 text-white rounded-full shadow-lg hover:bg-gray-700 flex items-center justify-center transition-all duration-300"
           aria-label="Back to top"
         >
-          <svg 
-            className="w-6 h-6" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M5 15l7-7 7 7" 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 15l7-7 7 7"
             />
           </svg>
         </button>
