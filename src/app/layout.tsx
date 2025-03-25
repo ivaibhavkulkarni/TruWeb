@@ -1,13 +1,16 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import type React from "react" // Import React
+import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Trubot",
-  description: "Built with passion",
+  title: "Trubot Plotter",
+  icons: {
+    icon: '/icon.ico',
+  },
+  description: "Built by Vaibhav Kulkarni",
 }
 
 export default function RootLayout({
