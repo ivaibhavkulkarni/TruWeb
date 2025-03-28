@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, Suspense } from "react";
 import { Ripple } from "@/components/magicui/ripple";
@@ -13,19 +13,19 @@ interface ModelProps {
 
 // Model component for the 3D model
 const Model: React.FC<ModelProps> = ({ modelPath }) => {
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const gltf = useLoader(GLTFLoader, modelPath, undefined, (event) => {
     console.error("Error loading 3D model:", event);
-    setError(true);
+    setError("Failed to load the 3D model. Check the console for details.");
   });
 
   if (error) {
     return (
       <Html center>
         <div className="bg-red-50 p-4 rounded-lg text-red-500 text-center">
-          <p>Failed to load 3D model</p>
-          <p className="text-xs mt-2">Please check the model path</p>
+          <p>{error}</p>
+          <p className="text-xs mt-2">Model Path: {modelPath}</p>
         </div>
       </Html>
     );
@@ -73,10 +73,6 @@ const RippleDemo: React.FC = () => {
               autoRotateSpeed={5}
               enablePan={false}
               enableRotate={true}
-              //minAzimuthAngle={0}
-              //maxAzimuthAngle={0}
-              //minPolarAngle={Math.PI / 2}
-              //maxPolarAngle={Math.PI / 2}
             />
           </Suspense>
         </Canvas>
