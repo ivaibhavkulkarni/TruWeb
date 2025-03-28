@@ -47,7 +47,7 @@ const ModelLoader: React.FC = () => {
 
 // Main component
 const RippleDemo: React.FC = () => {
-  const modelPath: string = "/model/Plotter_logo.glb";
+  const modelPath: string = "/model/Plotter_logo2.glb";
 
   return (
     <div className="relative flex w-full h-[calc(100vh-4rem)] mt-16 flex-col items-center justify-center overflow-hidden rounded-lg border bg-background">
